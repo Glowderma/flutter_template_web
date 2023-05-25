@@ -27,3 +27,25 @@ linter:
 
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options
+dart_code_metrics:
+  anti-patterns:
+    - long-method
+    - long-parameter-list
+  metrics:
+    cyclomatic-complexity: 15
+    maximum-nesting-level: 4
+    number-of-parameters: 4
+    source-lines-of-code: 50
+    technical-debt:
+      threshold: 1
+      todo-cost: 161
+      ignore-cost: 320
+      ignore-for-file-cost: 396
+      as-dynamic-cost: 322
+      deprecated-annotations-cost: 37
+      file-nullsafety-migration-cost: 41
+      unit-type: "USD"
+  metrics-exclude:
+    - test/**
+  extends:
+    - package:dart_code_metrics/presets/flutter_all.yaml
