@@ -9,7 +9,7 @@ jobs:
   sonarqube:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
       - uses: subosito/flutter-action@v2
@@ -18,23 +18,7 @@ jobs:
       - run: flutter --version
       - run: flutter pub get
       - run: flutter test --coverage ./lib
-      - name: Sonar-scanner static analysis
-        env:
-          SONAR_SCANNER_VER: sonar-scanner-cli-5.0.1.3006-linux
-          SONAR_SCANNER_PATH: sonar-scanner-5.0.1.3006-linux/bin
-        run: |
-          wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
-          unzip sonar-scanner-cli-5.0.1.3006-linux.zip
-          $SONAR_SCANNER_PATH/sonar-scanner -v
-          $SONAR_SCANNER_PATH/sonar-scanner \
-            -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-      # Check the Quality Gate status.
-      - name: SonarQube Quality Gate check
-        id: sonarqube-quality-gate-check
-        uses: sonarsource/sonarqube-quality-gate-action@master
-        # Force to fail step after specific time.
-        timeout-minutes: 5
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
